@@ -1,0 +1,12 @@
+# Compiled executable
+newsroom
+a.out
+
+# Object files
+*.o
+
+# macOS debug files
+*.dSYM/
+
+# macOS system files
+.DS_Store
