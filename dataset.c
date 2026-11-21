@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include "dataset.h"
-
 int loadArticles(const char *filename, Article articles[])
 {
     FILE *file = fopen(filename, "r");
@@ -10,14 +9,10 @@ int loadArticles(const char *filename, Article articles[])
         printf("Error opening dataset!\n");
         return 0;
     }
-
     char header[500];
-
     // Skip CSV header
     fgets(header, 500, file);
-
     int count = 0;
-
     while (count < MAX_ARTICLES &&
            fscanf(file,
                   "%d,%49[^,],%199[^,],%49[^,],%d,%d\n",
@@ -30,13 +25,9 @@ int loadArticles(const char *filename, Article articles[])
     {
         count++;
     }
-
     fclose(file);
-
     return count;
 }
-
-
 void displayArticles(Article articles[], int count)
 {
     printf("\n================ NEWS ARTICLES ================\n");
@@ -53,8 +44,6 @@ void displayArticles(Article articles[], int count)
 
     printf("\n================================================\n");
 }
-
-
 void displayOneArticle(Article article)
 {
     printf("\nArticle Found!\n");

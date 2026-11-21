@@ -1,10 +1,10 @@
 #include <stdio.h>
 #include <string.h>
-#include <limits.h>
 
 #include "algorithms.h"
 
 
+// Stores the result of Maximum Subarray
 typedef struct
 {
     int left;
@@ -14,138 +14,68 @@ typedef struct
 } SubarrayResult;
 
 
-// Finds maximum subarray crossing the midpoint
-
-SubarrayResult maxCrossingSubarray(
+// Kadane's Algorithm
+SubarrayResult kadaneMaximumSubarray(
     int arr[],
-    int low,
-    int mid,
-    int high
+    int n
 )
 {
-    int sum = 0;
+    int currentSum = arr[0];
+    int maxSum = arr[0];
 
-    int leftSum = INT_MIN;
-    int maxLeft = mid;
+    int currentStart = 0;
 
-    for (int i = mid; i >= low; i--)
+    int bestStart = 0;
+    int bestEnd = 0;
+
+
+    for (int i = 1; i < n; i++)
     {
-        sum += arr[i];
+        // Decide whether to continue the current subarray
+        // or start a new subarray from the current element
 
-        if (sum > leftSum)
+        if (arr[i] > currentSum + arr[i])
         {
-            leftSum = sum;
-            maxLeft = i;
+            currentSum = arr[i];
+            currentStart = i;
         }
-    }
-
-
-    sum = 0;
-
-    int rightSum = INT_MIN;
-    int maxRight = mid + 1;
-
-    for (int i = mid + 1; i <= high; i++)
-    {
-        sum += arr[i];
-
-        if (sum > rightSum)
+        else
         {
-            rightSum = sum;
-            maxRight = i;
+            currentSum =
+                currentSum + arr[i];
+        }
+
+
+        // Update the best subarray found so far
+
+        if (currentSum > maxSum)
+        {
+            maxSum = currentSum;
+
+            bestStart = currentStart;
+            bestEnd = i;
         }
     }
 
 
     SubarrayResult result;
 
-    result.left = maxLeft;
-    result.right = maxRight;
-    result.sum = leftSum + rightSum;
+    result.left = bestStart;
+    result.right = bestEnd;
+    result.sum = maxSum;
+
 
     return result;
 }
 
 
-// Divide-and-Conquer Maximum Subarray
-
-SubarrayResult maximumSubarray(
-    int arr[],
-    int low,
-    int high
-)
-{
-    // Base case
-    if (low == high)
-    {
-        SubarrayResult result;
-
-        result.left = low;
-        result.right = high;
-        result.sum = arr[low];
-
-        return result;
-    }
-
-
-    int mid = (low + high) / 2;
-
-
-    SubarrayResult leftResult =
-        maximumSubarray(
-            arr,
-            low,
-            mid
-        );
-
-
-    SubarrayResult rightResult =
-        maximumSubarray(
-            arr,
-            mid + 1,
-            high
-        );
-
-
-    SubarrayResult crossResult =
-        maxCrossingSubarray(
-            arr,
-            low,
-            mid,
-            high
-        );
-
-
-    if (leftResult.sum >= rightResult.sum &&
-        leftResult.sum >= crossResult.sum)
-    {
-        return leftResult;
-    }
-
-
-    if (rightResult.sum >= leftResult.sum &&
-        rightResult.sum >= crossResult.sum)
-    {
-        return rightResult;
-    }
-
-
-    return crossResult;
-}
-
-
 // Breaking News Analyzer
-
 void breakingNewsAnalyzer(
     Article articles[],
     int count
 )
 {
-    /*
-        Change in newsroom activity
-        over consecutive time intervals.
-    */
-
+    // Change in newsroom activity over time
     int activity[] =
     {
         -2,
@@ -164,11 +94,11 @@ void breakingNewsAnalyzer(
         sizeof(activity[0]);
 
 
+    // Apply Kadane's Algorithm
     SubarrayResult result =
-        maximumSubarray(
+        kadaneMaximumSubarray(
             activity,
-            0,
-            n - 1
+            n
         );
 
 
@@ -177,15 +107,18 @@ void breakingNewsAnalyzer(
     printf("                  BREAKING NEWS ANALYZER\n");
     printf("============================================================\n");
 
-
-    printf("\nAnalyzing newsroom activity...\n");
+    printf("\nAlgorithm : Kadane's Algorithm\n");
+    printf("Purpose   : Maximum Subarray / Peak News Activity\n");
 
 
     printf("\nActivity Change Sequence:\n");
 
     for (int i = 0; i < n; i++)
     {
-        printf("%d ", activity[i]);
+        printf(
+            "%d ",
+            activity[i]
+        );
     }
 
 
@@ -202,8 +135,7 @@ void breakingNewsAnalyzer(
     );
 
 
-    // Breaking threshold
-
+    // Breaking-news threshold
     if (result.sum >= 10)
     {
         printf("\n");
@@ -225,19 +157,12 @@ void breakingNewsAnalyzer(
 
 
         printf("\nRelated News Reports:\n");
-
-        printf(
-            "------------------------------------------------------------\n"
-        );
+        printf("------------------------------------------------------------\n");
 
 
         for (int i = 0; i < count; i++)
         {
-            /*
-                Select articles containing
-                rain or Rain in the headline.
-            */
-
+            // Find rainfall-related headlines
             if (
                 strstr(
                     articles[i].title,
@@ -281,9 +206,7 @@ void breakingNewsAnalyzer(
 
 
         printf("\n");
-        printf(
-            "------------------------------------------------------------\n"
-        );
+        printf("------------------------------------------------------------\n");
 
 
         printf(
@@ -312,21 +235,17 @@ void breakingNewsAnalyzer(
     else
     {
         printf("\n");
-        printf(
-            "------------------------------------------------------------\n"
-        );
+        printf("------------------------------------------------------------\n");
 
         printf(
             "No major breaking event detected.\n"
         );
 
         printf(
-            "Status: NORMAL NEWS ACTIVITY\n"
+            "Status : NORMAL NEWS ACTIVITY\n"
         );
     }
 
 
-    printf(
-        "============================================================\n"
-    );
+    printf("============================================================\n");
 }

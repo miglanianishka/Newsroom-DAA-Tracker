@@ -1,10 +1,5 @@
 #include "sorting.h"
-
-
-// ==================================================
 // MERGE SORT BY PUBLICATION TIME
-// ==================================================
-
 void mergeByTime(Article articles[], int left, int mid, int right)
 {
     int n1 = mid - left + 1;
@@ -15,24 +10,18 @@ void mergeByTime(Article articles[], int left, int mid, int right)
 
     int i, j, k;
 
-    for (i = 0; i < n1; i++)
-    {
+    for (i = 0; i < n1; i++){
         L[i] = articles[left + i];
     }
 
-    for (j = 0; j < n2; j++)
-    {
+    for (j = 0; j < n2; j++){
         R[j] = articles[mid + 1 + j];
     }
-
     i = 0;
     j = 0;
     k = left;
-
-    while (i < n1 && j < n2)
-    {
-        if (L[i].publicationTime <= R[j].publicationTime)
-        {
+    while (i < n1 && j < n2){
+        if (L[i].publicationTime <= R[j].publicationTime){
             articles[k] = L[i];
             i++;
         }
@@ -44,14 +33,12 @@ void mergeByTime(Article articles[], int left, int mid, int right)
 
         k++;
     }
-
     while (i < n1)
     {
         articles[k] = L[i];
         i++;
         k++;
     }
-
     while (j < n2)
     {
         articles[k] = R[j];
@@ -59,8 +46,6 @@ void mergeByTime(Article articles[], int left, int mid, int right)
         k++;
     }
 }
-
-
 void mergeSortByTime(Article articles[], int left, int right)
 {
     if (left < right)
@@ -73,22 +58,13 @@ void mergeSortByTime(Article articles[], int left, int right)
         mergeByTime(articles, left, mid, right);
     }
 }
-
-
-// ==================================================
 // MERGE SORT BY ARTICLE ID
-// ==================================================
-
-void mergeByID(Article articles[], int left, int mid, int right)
-{
+void mergeByID(Article articles[], int left, int mid, int right){
     int n1 = mid - left + 1;
     int n2 = right - mid;
-
     Article L[n1];
     Article R[n2];
-
     int i, j, k;
-
     for (i = 0; i < n1; i++)
     {
         L[i] = articles[left + i];
@@ -98,11 +74,9 @@ void mergeByID(Article articles[], int left, int mid, int right)
     {
         R[j] = articles[mid + 1 + j];
     }
-
     i = 0;
     j = 0;
     k = left;
-
     while (i < n1 && j < n2)
     {
         if (L[i].id <= R[j].id)
@@ -118,14 +92,12 @@ void mergeByID(Article articles[], int left, int mid, int right)
 
         k++;
     }
-
     while (i < n1)
     {
         articles[k] = L[i];
         i++;
         k++;
     }
-
     while (j < n2)
     {
         articles[k] = R[j];
@@ -133,10 +105,7 @@ void mergeByID(Article articles[], int left, int mid, int right)
         k++;
     }
 }
-
-
-void mergeSortByID(Article articles[], int left, int right)
-{
+void mergeSortByID(Article articles[], int left, int right){
     if (left < right)
     {
         int mid = (left + right) / 2;
@@ -148,11 +117,7 @@ void mergeSortByID(Article articles[], int left, int right)
     }
 }
 
-
-// ==================================================
 // QUICK SORT BY PRIORITY
-// ==================================================
-
 void swapArticles(Article *a, Article *b)
 {
     Article temp = *a;
